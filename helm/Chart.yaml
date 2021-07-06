@@ -1,0 +1,10 @@
+apiVersion: v1
+name: techtrends 
+description: Install a Python techtrends deployment
+keywords:
+- python
+- techtrends 
+version: 1.0.0
+maintainers:
+- name: truong 
+  email: truongbn@gmail.com

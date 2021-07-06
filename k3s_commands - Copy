@@ -1,0 +1,2 @@
+# https://kubernetes.io/docs/tutorials/clusters/apparmor/
+zypper install -t pattern apparmor

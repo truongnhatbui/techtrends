@@ -1,0 +1,89 @@
+# Inspect  the endpoints for the cluster and installed add-ons 
+kubectl cluster-info
+
+Kubernetes control plane is running at https://127.0.0.1:6443
+CoreDNS is running at https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+Metrics-server is running at https://127.0.0.1:6443/api/v1/namespaces/kube-system/services/https:metrics-server:/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+
+# List all the nodes in the cluster. 
+# To get a more detailed view of the nodes, the `-o wide` flag can be passed
+kubectl get nodes [-o wide] 
+
+NAME        STATUS   ROLES                  AGE     VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION            CONTAINER-RUNTIME
+localhost   Ready    control-plane,master   9m11s   v1.21.2+k3s1   10.0.2.15     <none>        openSUSE Leap 15.2   5.3.18-lp152.78-default   containerd://1.4.4-k3s2
+
+# Describe a cluster node.
+# Typical configuration: node IP, capacity (CPU and memory), a list of running pods on the node, podCIDR, etc.
+kubectl describe node {{ NODE NAME }}
+
+#kubectl describe node node-name - to get all the configuration details about the node, including the allocated pod CIDR
+kubectl describe node localhost | grep CIDR
+PodCIDR:                      10.42.0.0/24
+PodCIDRs:                     10.42.0.0/24
+
+# create a Deployment resource
+# NAME - required; set the name of the deployment
+# IMAGE - required;  specify the Docker image to be executed
+# FLAGS - optional; provide extra configuration parameters for the resource
+# COMMAND and args - optional; instruct the container to run specific commands when it starts 
+kubectl create deploy NAME --image=image [FLAGS] -- [COMMAND] [args]
+
+# Some of the widely used FLAGS are:
+-r, --replicas - set the number of replicas
+-n, --namespace - set the namespace to run
+--port - expose the container port
+
+#For example, to create a Deployment for the techtrends application, the following command can be used:
+
+# create a techtrends Deployment in namespace `techtrends`
+kubectl create deploy techtrends --image=buinhattruong/techtrends:v1.0.0 -n techtrends
+
+localhost:/home/vagrant # kubectl create deploy techtrends --image=buinhattruong/techtrends:v1.0.0
+deployment.apps/techtrends created
+localhost:/home/vagrant # kubectl get deploy
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+techtrends   0/1     1            0           38s
+localhost:/home/vagrant # kubectl get rs
+NAME                    DESIRED   CURRENT   READY   AGE
+techtrends-555dbd8f44   1         1         0       60s
+localhost:/home/vagrant # kubectl get po
+NAME                          READY   STATUS    RESTARTS   AGE
+techtrends-555dbd8f44-2mrg4   1/1     Running   0          20m
+
+
+#To create a headless pod, the kubectl run command is handy, with the following syntax:
+
+# create a headless pod
+# NAME - required; set the name of the pod
+# IMAGE - required;  specify the Docker image to be executed
+# FLAGS - optional; provide extra configuration parameters for the resource
+# COMMAND and args - optional; instruct the container to run specific commands when it starts 
+kubectl run NAME --image=image [FLAGS] -- [COMMAND] [args...]
+
+# Some of the widely used FLAGS are:
+--restart - set the restart policy. Options [Always, OnFailure, Never]
+--dry-run - dry run the command. Options [none, client, server]
+-it - open an interactive shell to the container
+For example, to create a busybox pod, the following command can be used:
+
+# example: create a busybox pod, with an interactive shell and a restart policy set to Never 
+kubectl run -it busybox-test --image=busybox --restart=Never
+
+
+#Port-forward to Resources
+#To access resources through port-forward, use the following command:
+kubectl port-forward RESOURCE/NAME [PARAMS]
+
+kubectl port-forward po/techtrends-555dbd8f44-2mrg4 6111:6111
+
+#Output 
+Forwarding from 127.0.0.1:6111 -> 6111
+Forwarding from [::1]:6111 -> 6111
+
+# expose the techtrends deployment, which will create a service
+kubectl expose deploy techtrends --port=6112 --target-port=6112
+
+#Output
+service/techtrends exposed

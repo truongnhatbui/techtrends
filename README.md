@@ -1,10 +1,34 @@
-# TechTreds Web Application
+# TechTrends Web Application
 
-This is a Flask application that lists the latest articles within the cloud-native ecosystem.
+TechTrends is an online website used as a news sharing platform that enables users to access the latest news within the cloud-native ecosystem. 
 
-## Run 
+## Cloud Native 
 
-To run this application there are 2 steps required:
+Cloud-native refers to the set of practices that empowers an organization to build and manage applications at scale. 
 
-1. Initialize the database by using the `python init_db.py` command. This will create or overwrite the `database.db` file that is used by the web application.
-2.  Run the TechTrends application by using the `python app.py` command. The application is running on port `3111` and you can access it by querying the `http://127.0.0.1:3111/` endpoint.
+1. Cloud Native
+Containers are closely associated with cloud-native terminology. 
+2. CNCF and Cloud Native Tooling
+Kubernetes 
+    Runtime
+    Networking
+    Storage
+    Service Mesh
+    Logs and metrics
+    Tracing
+3. Stakeholders
+Business Perspective
+Agility
+Growth
+Service availability
+
+Technical Perspective
+Automation 
+Orchestration 
+Observability 
+4. Tools, Environment & Dependencies
+Python - [https://www.python.org/downloads/](https://www.python.org/downloads/)
+Git - [https://git-scm.com/downloads](https://git-scm.com/downloads)
+Docker - [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+Vagrant - [https://www.vagrantup.com/downloads](https://www.vagrantup.com/downloads)
+Virtual Box - [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
